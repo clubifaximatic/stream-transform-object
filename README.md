@@ -1,7 +1,5 @@
 # stream-transform-object
 
-# stream-through
-
 A collection of implementations to work with streams and transform/manage documents
 
 ## methods
@@ -11,10 +9,11 @@ The constructor of each class has the parameters `func` and `callback` both are 
 ### func parameter
 If `func` is defined the func will be call for each element depending on the implementation
 
-The function `func` receives two parameters:
+The function `func` receives three parameters:
 
-1. The `doc` to be processed
+1. The `document` to be processed
 2. The `next` function to be called once the document has been processed. It receives two parameters: 1) the error, if any 2) the document that we want to propagate or undefined.
+3. The `index` of the document being processed in the stream
 
 
 ### callback parameter
@@ -48,7 +47,7 @@ var smap = st.map(
   1,
 
   // func
-  function (doc, next) {
+  function (doc, next, n) {
     doc.username = doc.username.toUppercase();
     next (undefined, doc);
   },
@@ -82,7 +81,8 @@ var sslice = st.slice(
   10,
 
   // func. docs is an array of 10 elements
-  function (docs, next) {
+  function (docs, next, n) {
+    console.log('processing document:', n);
     updateDatabaseBatch(docs, function (err) {
       next(err, docs);
     });

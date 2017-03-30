@@ -1,6 +1,6 @@
 {
   "name": "stream-transform-object",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "Different implementations for working with streams and transform objects",
   "main": "index.js",
   "scripts": {

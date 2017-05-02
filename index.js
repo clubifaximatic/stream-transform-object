@@ -1,9 +1,14 @@
+'use strict';
 
-var StreamSlice = require('./lib/stream-slice');
-var StreamMap = require('./lib/stream-map');
-var StreamFrequency = require('./lib/stream-frequency');
+const StreamSlice = require('./lib/stream-slice');
+const StreamMap = require('./lib/stream-map');
+const StreamFrequency = require('./lib/stream-frequency');
+const StreamPuller = require('./lib/stream-puller');
+const StreamDrain = require('./lib/stream-drain');
+const StreamSplit = require('./lib/stream-split');
 
-var internals = {};
+const internals = {};
+module.exports = internals;
 
 internals.slice = function (nitems, func, callback) {
   return new StreamSlice(nitems, func, callback);
@@ -17,4 +22,15 @@ internals.frequency = function (nitems, func, callback) {
   return new StreamFrequency(nitems, func, callback);
 };
 
-module.exports = internals;
+internals.puller = function (func) {
+  return new StreamPuller(func);
+};
+
+internals.drain = function (callback) {
+  return new StreamDrain(callback);
+};
+
+internals.split = function (streams) {
+  return new StreamSplit(streams);
+};
+

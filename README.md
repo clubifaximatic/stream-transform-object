@@ -135,6 +135,28 @@ mongocursor.pipe(sfreq);
 
 ```
 
+### drain(callback)
+
+Consumes the stream doing nothing
+
+* callback: (optional) callback function called when stream ends
+
+
+```js
+const st = require('stream-transform-objecth');
+
+// create stream
+var sfreq = st.frequency (
+  // callback
+  function (doc, stats) {
+    console.log('END', stats);
+  }
+);
+
+// pipe results
+mongocursor.pipe(sfreq);
+
+```
 
 ### Pipe all 
 
@@ -142,7 +164,7 @@ mongocursor.pipe(sfreq);
 ```js
 const st = require('stream-transform-object');
 
-var transform = st.map(
+var transform = st.map (
   // nitems
   100,
 
@@ -151,7 +173,7 @@ var transform = st.map(
   }
 );
 
-var save = st.slice(
+var save = st.slice (
   // nitems
   50,
 
@@ -160,13 +182,15 @@ var save = st.slice(
   }
 );
 
-var update = st.frequency(
+var update = st.frequency (
   60,
 
   function (docs, next) {
     // Update Dynamo table
-  },
+  }
+);
 
+var drain = st.drain (
   // callback
   function (doc, stats) {
     console.log('END', stats);
@@ -174,7 +198,11 @@ var update = st.frequency(
 );
 
 // pipe all
-mongocursor.pipe(transform).pipe(save).pipe(update);
+mongocursor
+  .pipe(transform)
+  .pipe(save)
+  .pipe(update)
+  .pipe(drain);
 
 ```
 
